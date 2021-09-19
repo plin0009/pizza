@@ -29,6 +29,11 @@ export default async function handler(
     }
   });
   if (taken) return;
+
+  await Slice.create({
+    room_code: code,
+    name
+  });
   
-  res.status(200).json({ ok: true, slices: slices ?? [] });
+  res.status(200).json({ ok: true });
 }
