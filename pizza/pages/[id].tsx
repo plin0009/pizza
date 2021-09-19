@@ -1,8 +1,13 @@
+import { GetServerSideProps } from "next";
 import { useState } from "react";
+import useSWR from 'swr';
+import { useRouter } from "next/router";
 
 const PizzaPage = () => {
+  const router = useRouter();
   const [name, setName] = useState('');
   const [showPizza, setShowPizza] = useState(false);
+  const id = router.query.id as string;
 
   return showPizza ? (
     <>
@@ -42,7 +47,15 @@ const PizzaPage = () => {
           />
           <button
             className="rounded-lg py-4 px-8 bg-yellow-200 text-2xl"
-            onClick={() => setShowPizza(true)}
+            onClick={async () => {
+              const response = await fetch(`/api/join/${id}/${name}`);
+              const { ok, message } = await response.json();
+              if (!ok) {
+                alert(message);
+              } else {
+                setShowPizza(true);
+              }
+            }}
           >
             Ready to eat!
           </button>

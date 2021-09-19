@@ -1,7 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -14,7 +17,16 @@ const Home: NextPage = () => {
         <h1 className="text-6xl font-bold text-yellow-200">
           App that helps you eat pizza
         </h1>
-        <button className="rounded-lg py-4 px-8 my-8 bg-yellow-200 text-2xl">Generate pizza</button>
+        <button
+          className="rounded-lg py-4 px-8 my-8 bg-yellow-200 text-2xl"
+          onClick={async () => {
+            const response = await fetch('/api/new-room');
+            const { code } = await response.json();
+            router.push(`/${code}`);
+          }}
+        >
+          Generate pizza
+        </button>
       </main>
     </>
   )
